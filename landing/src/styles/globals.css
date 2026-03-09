@@ -66,15 +66,6 @@
   }
 }
 
-@keyframes github-stripes-flow {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: -5px 0;
-  }
-}
-
 .github-cta-stripes {
   background-image: repeating-linear-gradient(
     -45deg,
@@ -84,17 +75,9 @@
     currentColor 5px
   );
   background-repeat: repeat;
-  will-change: background-position;
-  transform: translateZ(0);
-  animation: github-stripes-flow 240ms linear infinite;
-  animation-play-state: paused;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .github-cta-button:hover .github-cta-stripes,
-  .github-cta-button:focus-visible .github-cta-stripes {
-    animation-play-state: running;
-  }
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 @keyframes paykit-code-type-line-fast {

@@ -12,6 +12,10 @@ import { useEarlyDevDialog } from "./early-dev-dialog";
 const rotatingWords = ["TypeScript", "modern SaaS", "Next.js apps"];
 const enterEase = [0.23, 1, 0.32, 1] as const;
 const moveEase = [0.645, 0.045, 0.355, 1] as const;
+const githubStripeRevealVariants = {
+  rest: { opacity: 0 },
+  hover: { opacity: 0.22 },
+} as const;
 
 export function HeroTitle() {
   const { open: openEarlyDevDialog } = useEarlyDevDialog();
@@ -83,20 +87,48 @@ export function HeroTitle() {
           >
             Read Docs
           </Link>
-          <a
+          <motion.a
             href={URLs.githubRepo}
             target="_blank"
             rel="noopener noreferrer"
+            initial="rest"
+            animate="rest"
+            whileHover="hover"
+            whileFocus="hover"
             className="github-cta-button group dark:text-foreground/75 hover:dark:text-foreground/90 relative inline-flex items-center gap-1.5 px-4 py-2 text-xs font-medium text-neutral-600 transition-[color,transform] duration-200 motion-safe:hover:-translate-y-px motion-safe:active:translate-y-0 sm:px-5 sm:text-sm"
           >
             {/* Diagonal lines background */}
             <span
-              className="pointer-events-none absolute inset-0 overflow-hidden"
+              className="pointer-events-none absolute inset-0.25 overflow-hidden"
               aria-hidden="true"
             >
-              <span className="absolute -inset-x-4 inset-y-0 opacity-0 transition-opacity duration-180 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:opacity-[0.22]">
-                <span className="github-cta-stripes absolute inset-0" />
-              </span>
+              <motion.span
+                variants={githubStripeRevealVariants}
+                transition={{ duration: 0.75, ease: enterEase }}
+                className="absolute inset-0"
+              >
+                <motion.span
+                  animate={
+                    shouldReduceMotion
+                      ? { x: 0, y: 0 }
+                      : {
+                          x: [0, -14],
+                          y: [0, -14],
+                        }
+                  }
+                  transition={
+                    shouldReduceMotion
+                      ? { duration: 0.75 }
+                      : {
+                          duration: 0.75,
+                          ease: "linear",
+                          repeat: Number.POSITIVE_INFINITY,
+                          repeatType: "loop",
+                        }
+                  }
+                  className="github-cta-stripes absolute -inset-3"
+                />
+              </motion.span>
             </span>
             {/* Top border */}
             <span className="bg-foreground/22 group-hover:bg-foreground/30 absolute top-0 -right-[6px] -left-[6px] h-px transition-colors" />
@@ -108,7 +140,7 @@ export function HeroTitle() {
             <span className="bg-foreground/22 group-hover:bg-foreground/30 absolute -top-[6px] right-0 -bottom-[6px] w-px transition-colors" />
             <Github className="relative size-4" />
             <span className="relative">View on GitHub</span>
-          </a>
+          </motion.a>
         </div>
       </div>
     </motion.div>
